@@ -103,6 +103,14 @@
     var more = document.getElementById('loadmore'), cnt = document.getElementById('fcount'), empty = document.getElementById('fempty');
     /* Webflow turns buttons into links: stop them navigating */
     document.querySelectorAll('#fbar a, #subs a, .more-row a, #fempty a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); }); });
+    /* Webflow drops mixed inline content in the dropdown buttons: rebuild label + value */
+    (function(){
+      var L={outcome:'Outcome',county:'County',team:'Attorney'};
+      document.querySelectorAll('#fbar .ms').forEach(function(m){
+        var b=m.querySelector('.msbtn'); if(!b||b.querySelector('.mslbl')) return;
+        b.innerHTML='<span class="mslbl">'+L[m.dataset.k]+'</span><b class="msval">All</b>';
+      });
+    })();
     /* Webflow can't hold checkboxes outside a form, so the filter options are generated here from the cards. */
     (function(){
       var names={horn:'Daniel C. Horn',modican:'JoeMarie R. Modican',latham:'Terese M. Latham'};
