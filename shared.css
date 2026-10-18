@@ -214,7 +214,7 @@ section{padding:110px 0}
 .results .chip.o{background:var(--gold-pale);color:var(--dark);border-color:var(--gold-pale)}
 .results .facts,.results .facts li{border-color:var(--line-dk)}
 .results .facts li span:first-child{color:rgba(247,244,236,.5)}
-.results .facts li span:last-child{color:var(--white)}
+.results .facts li :is(span,div):last-child{color:var(--white)}
 .results .facts li .win{color:var(--gold-lt)!important}
 .results .tlink{color:var(--gold-lt)}
 .results .btn-line{border-color:rgba(247,244,236,.4);color:var(--cream)}
@@ -237,7 +237,7 @@ section{padding:110px 0}
 .facts{list-style:none;border-top:1px solid var(--line)}
 .facts li{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
 .facts li span:first-child{color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-size:11.5px;font-weight:600}
-.facts li span:last-child{text-align:right;font-weight:600}
+.facts li :is(span,div):last-child{text-align:right;font-weight:600}
 .facts li .win{color:var(--gold);font-family:'Trirong',serif;font-size:19px;font-weight:400}
 .rcard .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:16px;flex-wrap:wrap}
 .rcard .foot .note{font-size:12px;color:var(--muted)}
@@ -452,8 +452,8 @@ section[id]{scroll-margin-top:24px}
 .hcontent h1 em,.pagehead h1 em{letter-spacing:-.018em}
 
 /* ===== Interior pages: shared bits ===== */
-.pagehead .jump.static span{font-size:12.5px;padding:7px 13px;border-radius:100px;border:1px solid rgba(255,255,255,.16);color:rgba(247,244,236,.9);background:rgba(255,255,255,.04)}
-.pagehead .jump.static span:first-child{background:var(--gold-pale);color:var(--ink);border-color:var(--gold-pale);font-weight:600}
+.pagehead .jump.static :is(span,div){font-size:12.5px;padding:7px 13px;border-radius:100px;border:1px solid rgba(255,255,255,.16);color:rgba(247,244,236,.9);background:rgba(255,255,255,.04)}
+.pagehead .jump.static :is(span,div):first-child{background:var(--gold-pale);color:var(--ink);border-color:var(--gold-pale);font-weight:600}
 .pagehead.long h1{white-space:normal;max-width:20ch}
 .h1esq{font-family:'Figtree',sans-serif;font-size:.36em;letter-spacing:0;color:rgba(247,244,236,.6);margin-left:4px}
 .notice{font-size:12.5px;color:var(--muted);margin-bottom:28px}
@@ -794,3 +794,11 @@ a{text-underline-offset:3px}
 .fbar .msbtn,.fbar .reset,.fbar .seg .w-button,.subf,.msclear{text-decoration:none}
 .fbar .w-button,.subf.w-button,.msclear.w-button{line-height:1.4;border-radius:inherit}
 .subf.dis{opacity:.4;cursor:default;pointer-events:none}
+
+/* CMS template additions */
+.crumbs .tx{display:inline}
+.tx{margin:0}
+.vnote{font-size:13px;color:var(--muted);margin-top:14px}
+.pagehead h1 .tx,.pagehead .ledeline .tx{display:inline}
+.w-richtext{margin:0}
+.w-richtext::before,.w-richtext::after{content:none}
