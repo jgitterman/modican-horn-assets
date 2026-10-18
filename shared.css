@@ -15,6 +15,9 @@ ul,ol{list-style:none}
 img{display:inline;max-width:none;vertical-align:baseline;border:0}
 label{display:inline;margin:0;font-weight:inherit}
 .w-form{margin:0}
+.w-button.menubtn{padding:8px 14px;background:transparent;border:none;line-height:1.6}
+.w-button.mtoggle{padding:0;background:transparent}
+.menubtn,.mtoggle{text-decoration:none}
 html{scroll-behavior:smooth}
 body{font-family:'Figtree',sans-serif;background:var(--cream);color:var(--ink);font-size:16px;line-height:1.6}
 h1,h2,h3{font-family:'Trirong',serif;font-weight:400;line-height:1.14;letter-spacing:-.01em;text-wrap:balance}

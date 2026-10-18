@@ -2,8 +2,13 @@
 (function(){
   var h=document.querySelector('.hcontent h1');
   if(h && !h.querySelector('em')) h.innerHTML='Your exposure,<br>our <em>defense</em>';
-  var b=document.querySelector('.burger');
-  if(b && !b.children.length) b.innerHTML='<i></i><i></i><i></i>';
+  var im=document.querySelector('.hero .bg');
+  if(im){ im.id='heroImg'; im.loading='eager'; im.setAttribute('fetchpriority','high'); }
+  var mb=document.getElementById('menuBtn');
+  if(mb && !mb.querySelector('.burger')){
+    mb.setAttribute('role','button');
+    mb.innerHTML='<span class="burger" aria-hidden="true"><i></i><i></i><i></i></span><span class="mlabel">Menu</span>';
+  }
 })();
 
 (function(){
@@ -48,7 +53,7 @@
   function closeMenus(scope){ (scope || document).querySelectorAll('.navwrap').forEach(function(w){ var b = w.querySelector('.menubtn'), p = w.querySelector('.menupanel'); b.setAttribute('aria-expanded', false); p.classList.remove('open'); }); }
   document.querySelectorAll('.navwrap').forEach(function(w){
     var b = w.querySelector('.menubtn'), p = w.querySelector('.menupanel');
-    b.addEventListener('click', function(e){ e.stopPropagation(); var o = b.getAttribute('aria-expanded') !== 'true'; closeMenus(); b.setAttribute('aria-expanded', o); p.classList.toggle('open', o); });
+    b.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); var o = b.getAttribute('aria-expanded') !== 'true'; closeMenus(); b.setAttribute('aria-expanded', o); p.classList.toggle('open', o); });
     p.addEventListener('click', function(e){ e.stopPropagation(); });
     p.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ closeMenus(); }); });
   });
@@ -56,7 +61,7 @@
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenus(); });
 
   document.querySelectorAll('.mtoggle').forEach(function(tg){
-    tg.addEventListener('click', function(e){ e.stopPropagation(); var o = tg.getAttribute('aria-expanded') !== 'true'; tg.setAttribute('aria-expanded', o); document.getElementById(tg.getAttribute('aria-controls')).classList.toggle('open', o); });
+    tg.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); var o = tg.getAttribute('aria-expanded') !== 'true'; tg.setAttribute('aria-expanded', o); document.getElementById(tg.getAttribute('aria-controls')).classList.toggle('open', o); });
   });
 
   // timeline: wait until the section is well into view, then draw slowly
