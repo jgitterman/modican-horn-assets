@@ -1,3 +1,10 @@
+/* Webflow: restore inline markup the builder can't hold (hero line break + emphasis, menu burger) */
+(function(){
+  var h=document.querySelector('.hcontent h1');
+  if(h && !h.querySelector('em')) h.innerHTML='Your exposure,<br>our <em>defense</em>';
+  var b=document.querySelector('.burger');
+  if(b && !b.children.length) b.innerHTML='<i></i><i></i><i></i>';
+})();
 
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
