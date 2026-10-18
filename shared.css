@@ -836,3 +836,9 @@ a{text-underline-offset:3px}
 .tnav button:disabled{opacity:0;pointer-events:none}
 @media(max-width:560px){.tnav button:first-child{left:6px}.tnav button:last-child{right:6px}}
 .tnav button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* Portrait avatars (v9.2): real headshots are tall, so crop each small avatar to head and shoulders.
+   object-view-box crops the image content itself; object-position is the fallback for older browsers. */
+.avs img,.sig img,.tcard .who img,.fcard img{object-position:50% 8%}
+.avs img,.sig img,.tcard .who img{object-view-box:inset(3% 7% 33% 7%)}
+.fcard img{object-view-box:inset(3% 7% 23% 7%)}
