@@ -805,4 +805,4 @@ a{text-underline-offset:3px}
 
 /* testimonial strip: Webflow converts dots to link buttons */
 .qnav a.w-button{min-width:0;font-size:0;line-height:0;text-decoration:none;box-sizing:border-box;display:block}
-.vnote{font-size:13px;color:rgba(247,244,236,.62);text-align:center;max-width:62ch;margin:22px auto 0}
+.voices .vnote{font-size:13px;color:rgba(247,244,236,.62);text-align:center;max-width:62ch;margin:22px auto 0}
