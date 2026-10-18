@@ -303,11 +303,11 @@
   ['wheel','touchstart','keydown'].forEach(function(ev){ addEventListener(ev, function(){ cancelAnimationFrame(raf); }, {passive:true}); });
   document.addEventListener('click', function(e){
     var a = e.target.closest && e.target.closest('a[href*="#"]');
-    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
     var u = new URL(a.href, location.href);
     if (u.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, '') || !u.hash || u.hash === '#') return;
     var el = document.getElementById(decodeURIComponent(u.hash.slice(1)));
     if (!el) return;
-    e.preventDefault(); go(el, true);
-  });
+    e.preventDefault(); e.stopImmediatePropagation(); go(el, true); // capture phase: pre-empts Webflow's own anchor scroller
+  }, true);
 })();
