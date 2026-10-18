@@ -228,3 +228,10 @@
   new IntersectionObserver(function(es){ visible = es[0].isIntersecting; visible ? start() : stop(); }).observe(hero);
   document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
 })();
+
+/* Webflow: stagger delays come from data attributes (Webflow can't store inline CSS variables) */
+(function(){
+  document.querySelectorAll('[data-d]').forEach(function(el){ el.style.setProperty('--d', el.getAttribute('data-d')); });
+  document.querySelectorAll('[data-td]').forEach(function(el){ el.style.setProperty('--td', el.getAttribute('data-td')); });
+  document.querySelectorAll('[data-sd]').forEach(function(el){ el.style.setProperty('--sd', el.getAttribute('data-sd')); });
+})();
