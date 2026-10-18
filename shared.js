@@ -101,6 +101,8 @@
     var PAGE = 4, shown = PAGE, cat = 'all', sel = {outcome:[], county:[], team:[], area:[]};
     var cards = [].slice.call(grid.querySelectorAll('.rcard'));
     var more = document.getElementById('loadmore'), cnt = document.getElementById('fcount'), empty = document.getElementById('fempty');
+    /* Webflow turns buttons into links: stop them navigating */
+    document.querySelectorAll('#fbar a, #subs a, .more-row a, #fempty a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); }); });
     /* Webflow can't hold checkboxes outside a form, so the filter options are generated here from the cards. */
     (function(){
       var names={horn:'Daniel C. Horn',modican:'JoeMarie R. Modican',latham:'Terese M. Latham'};
@@ -144,7 +146,7 @@
       }
       subs.forEach(function(b){
         var n = cards.filter(function(c){ return ok(c, true) && c.dataset.area === b.dataset.v; }).length;
-        b.innerHTML = b.dataset.v + '<span class="c">' + n + '</span>'; b.disabled = n === 0 && !b.classList.contains('on');
+        b.innerHTML = b.dataset.v + '<span class="c">' + n + '</span>'; b.disabled = n === 0 && !b.classList.contains('on'); b.classList.toggle('dis', b.disabled);
       });
       mss.forEach(function(m){
         var v = sel[m.dataset.k], out = m.querySelector('.msval');
@@ -162,13 +164,13 @@
     });
     document.addEventListener('click', function(){ closeAll(); });
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeAll(); });
-    document.querySelectorAll('#fbar .seg button').forEach(function(b){
-      b.addEventListener('click', function(){ document.querySelectorAll('#fbar .seg button').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
+    document.querySelectorAll('#fbar .seg [data-f]').forEach(function(b){
+      b.addEventListener('click', function(){ document.querySelectorAll('#fbar .seg [data-f]').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
         cat = b.dataset.f; sel.area = []; subs.forEach(function(s){ s.classList.remove('on'); }); shown = PAGE; apply(); });
     });
     subs.forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('on'); sel.area = subs.filter(function(s){ return s.classList.contains('on'); }).map(function(s){ return s.dataset.v; }); shown = PAGE; apply(); }); });
     function reset(){ cat = 'all'; sel = {outcome:[], county:[], team:[], area:[]}; shown = PAGE;
-      document.querySelectorAll('#fbar .seg button').forEach(function(x,i){ x.classList.toggle('on', i === 0); });
+      document.querySelectorAll('#fbar .seg [data-f]').forEach(function(x,i){ x.classList.toggle('on', i === 0); });
       document.querySelectorAll('#fbar input').forEach(function(x){ x.checked = false; }); subs.forEach(function(s){ s.classList.remove('on'); }); apply(); }
     document.getElementById('freset').addEventListener('click', reset);
     document.getElementById('freset2').addEventListener('click', reset);

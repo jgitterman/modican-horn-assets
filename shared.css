@@ -548,8 +548,8 @@ section[id]{scroll-margin-top:24px}
 .rindex .chip:not(.o){background:var(--cream)}
 .fbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;background:var(--white);border-radius:var(--r-md);padding:16px 18px;margin-bottom:18px}
 .fbar .seg{display:inline-flex;background:var(--cream);border:1px solid var(--line);border-radius:100px;padding:4px}
-.fbar .seg button{border:none;background:transparent;font-family:'Figtree',sans-serif;font-size:13.5px;font-weight:500;color:var(--muted);padding:9px 16px;border-radius:100px;cursor:pointer;transition:background .2s,color .2s}
-.fbar .seg button.on{background:var(--dark);color:var(--cream)}
+.fbar .seg [data-f]{border:none;background:transparent;font-family:'Figtree',sans-serif;font-size:13.5px;font-weight:500;color:var(--muted);padding:9px 16px;border-radius:100px;cursor:pointer;transition:background .2s,color .2s}
+.fbar .seg [data-f].on{background:var(--dark);color:var(--cream)}
 .fbar label{display:flex;flex-direction:column;gap:5px;flex:1;min-width:160px}
 .fbar label span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .fbar select{font-family:'Figtree',sans-serif;font-size:14px;color:var(--ink);background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:11px 14px;cursor:pointer}
@@ -559,7 +559,7 @@ section[id]{scroll-margin-top:24px}
 .fmeta .notice{margin:0}
 .rindex .rcard.hide,.rindex .rcard.paged{display:none}
 .fempty{text-align:center;color:var(--muted);padding:40px 0}
-.fempty button{border:none;background:none;color:var(--gold);font-weight:600;cursor:pointer;font-family:inherit;font-size:inherit}
+.fempty a{border:none;background:none;color:var(--gold);font-weight:600;cursor:pointer;font-family:inherit;font-size:inherit}
 .more-row{text-align:center;margin-top:36px}
 .more-row[hidden]{display:none}
 /* profile focus block (dark) */
@@ -617,9 +617,9 @@ section[id]{scroll-margin-top:24px}
 /* results filter: open row, no card */
 .fbar{background:transparent;border:none;border-radius:0;padding:0 0 18px;margin-bottom:20px;border-bottom:1px solid var(--line);justify-content:space-between;align-items:center}
 .fbar .seg{background:transparent;border:none;padding:0;gap:6px}
-.fbar .seg button{border:1px solid var(--line);background:transparent;padding:9px 18px}
-.fbar .seg button:hover{border-color:var(--ink);color:var(--ink)}
-.fbar .seg button.on{background:var(--dark);border-color:var(--dark);color:var(--cream)}
+.fbar .seg [data-f]{border:1px solid var(--line);background:transparent;padding:9px 18px}
+.fbar .seg [data-f]:hover{border-color:var(--ink);color:var(--ink)}
+.fbar .seg [data-f].on{background:var(--dark);border-color:var(--dark);color:var(--cream)}
 .fbar .sels{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
 .fbar label{flex:0 0 auto;min-width:0}
 .fbar .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -696,8 +696,8 @@ section[id]{scroll-margin-top:24px}
 #fbar.hassub{border-bottom:none;padding-bottom:12px;margin-bottom:0}
 .subs{margin:0 0 18px;overflow:hidden}
 .subrow{padding-top:2px}
-#fbar .seg button:focus-visible{outline-offset:2px}
-.fbar .seg button{transition:background .3s cubic-bezier(.2,.65,.3,1),color .3s,border-color .3s}
+#fbar .seg [data-f]:focus-visible{outline-offset:2px}
+.fbar .seg [data-f]{transition:background .3s cubic-bezier(.2,.65,.3,1),color .3s,border-color .3s}
 .subf{transition:border-color .25s,background .3s cubic-bezier(.2,.65,.3,1),color .25s}
 /* sticky nav on scroll up */
 .stickynav{position:fixed;top:0;left:0;right:0;z-index:60;background:rgba(24,20,15,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:0 0 22px 22px;transform:translateY(-110%);transition:transform .45s cubic-bezier(.2,.65,.3,1);box-shadow:0 18px 40px -28px rgba(0,0,0,.6)}
@@ -792,3 +792,5 @@ a{text-underline-offset:3px}
 .opic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .tnote{color:rgba(247,244,236,.68);font-size:14.5px;margin-bottom:18px}
 .fbar .msbtn,.fbar .reset,.fbar .seg .w-button,.subf,.msclear{text-decoration:none}
+.fbar .w-button,.subf.w-button,.msclear.w-button{line-height:1.4;border-radius:inherit}
+.subf.dis{opacity:.4;cursor:default;pointer-events:none}
