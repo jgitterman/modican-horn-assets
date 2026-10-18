@@ -311,3 +311,26 @@
     e.preventDefault(); e.stopImmediatePropagation(); go(el, true); // capture phase: pre-empts Webflow's own anchor scroller
   }, true);
 })();
+
+// home team slider: arrows appear only when more people exist than fit in one row
+(function(){
+  var g = document.querySelector('.tgrid');
+  if (!g || g.closest('.pagemain')) return;
+  var nav = document.createElement('div'); nav.className = 'tnav'; nav.hidden = true;
+  nav.innerHTML = '<button type="button" aria-label="Previous team members">\u2190</button><button type="button" aria-label="More team members">\u2192</button>';
+  g.parentNode.insertBefore(nav, g.nextSibling);
+  var b = nav.querySelectorAll('button');
+  function step(){ var t = g.querySelector('.tile'); return t ? t.getBoundingClientRect().width + 20 : 300; }
+  function sync(){
+    var more = g.scrollWidth > g.clientWidth + 4;
+    nav.hidden = !more;
+    b[0].disabled = g.scrollLeft < 4;
+    b[1].disabled = g.scrollLeft + g.clientWidth >= g.scrollWidth - 4;
+  }
+  b[0].addEventListener('click', function(){ g.scrollBy({left: -step(), behavior: 'smooth'}); });
+  b[1].addEventListener('click', function(){ g.scrollBy({left: step(), behavior: 'smooth'}); });
+  g.addEventListener('scroll', sync, {passive:true});
+  addEventListener('resize', sync);
+  addEventListener('load', sync);
+  sync();
+})();

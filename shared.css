@@ -812,3 +812,25 @@ a{text-underline-offset:3px}
 .rgrid .w-dyn-list,.rgrid .w-dyn-items,.rgrid .w-dyn-item,.tgrid .w-dyn-list,.tgrid .w-dyn-items,.tgrid .w-dyn-item{display:contents}
 .rgrid .w-dyn-empty,.tgrid .w-dyn-empty{grid-column:1/-1}
 .tile h3 .tx{display:inline}
+
+/* ===== Team grids =====
+   Home (no .pagemain): one-row slider showing 4, rest reached with arrows/swipe.
+   Inner pages (.pagemain): grid; on the Firm page the first two people sit centered above the rest. */
+.tgrid{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.tgrid::-webkit-scrollbar{display:none}
+.tgrid>.tile,.tgrid .w-dyn-item>.tile{flex:0 0 calc((100% - 60px)/4);scroll-snap-align:start}
+@media(max-width:1000px){.tgrid>.tile,.tgrid .w-dyn-item>.tile{flex-basis:calc((100% - 20px)/2)}}
+@media(max-width:560px){.tgrid>.tile,.tgrid .w-dyn-item>.tile{flex-basis:82%}}
+.pagemain .tgrid{display:grid;grid-template-columns:repeat(4,1fr);overflow:visible;scroll-snap-type:none}
+@media(max-width:1000px){.pagemain .tgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.pagemain .tgrid{grid-template-columns:1fr}}
+@media(min-width:1001px){
+  .pagemain .tgrid:not(.three) .w-dyn-item:nth-child(1)>.tile{grid-column:2}
+  .pagemain .tgrid:not(.three) .w-dyn-item:nth-child(2)>.tile{grid-column:3}
+  .pagemain .tgrid:not(.three) .w-dyn-item:nth-child(3)>.tile{grid-column:1}
+}
+.tnav{display:flex;justify-content:center;gap:12px;margin-top:28px}
+.tnav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:var(--ink);font-size:18px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .25s,color .25s,border-color .25s,opacity .25s}
+.tnav button:hover:not(:disabled){background:var(--gold);color:var(--white);border-color:var(--gold)}
+.tnav button:disabled{opacity:.35;cursor:default}
+.tnav button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
