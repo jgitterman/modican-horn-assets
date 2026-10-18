@@ -4,6 +4,8 @@
   if(h && !h.querySelector('em')) h.innerHTML='Your exposure,<br>our <em>defense</em>';
   var im=document.querySelector('.hero .bg');
   if(im){ im.id='heroImg'; im.loading='eager'; im.setAttribute('fetchpriority','high'); }
+  var sb=document.querySelector('.contact form input[type=submit]');
+  if(sb && sb.value==='Submit') sb.value='Send Us a Case \u2192';
   var mb=document.getElementById('menuBtn');
   if(mb && !mb.querySelector('.burger')){
     mb.setAttribute('role','button');
