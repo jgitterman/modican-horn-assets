@@ -101,6 +101,23 @@
     var PAGE = 4, shown = PAGE, cat = 'all', sel = {outcome:[], county:[], team:[], area:[]};
     var cards = [].slice.call(grid.querySelectorAll('.rcard'));
     var more = document.getElementById('loadmore'), cnt = document.getElementById('fcount'), empty = document.getElementById('fempty');
+    /* Webflow can't hold checkboxes outside a form, so the filter options are generated here from the cards. */
+    (function(){
+      var names={horn:'Daniel C. Horn',modican:'JoeMarie R. Modican',latham:'Terese M. Latham'};
+      document.querySelectorAll('#fbar .ms').forEach(function(m){
+        var p=m.querySelector('.mspanel'); if(!p||p.querySelector('.opt')) return;
+        var k=m.dataset.k, set={};
+        cards.forEach(function(c){ var v=c.dataset[k]||''; (k==='team'?v.split(' '):[v]).forEach(function(x){ if(x) set[x]=1; }); });
+        if(k==='team'){ set.horn=set.modican=set.latham=1; }
+        var foot=p.querySelector('.msfoot');
+        Object.keys(set).sort(function(x,y){ return (names[x]||x).localeCompare(names[y]||y); }).forEach(function(v){
+          var l=document.createElement('label'); l.className='opt';
+          var i=document.createElement('input'); i.type='checkbox'; i.value=v;
+          var t=document.createElement('span'); t.textContent=names[v]||v;
+          l.appendChild(i); l.appendChild(t); p.insertBefore(l,foot);
+        });
+      });
+    })();
     var mss = [].slice.call(document.querySelectorAll('#fbar .ms')), subs = [].slice.call(document.querySelectorAll('#subs .subf'));
     function ok(c, skipArea){
       return (cat === 'all' || c.dataset.cat === cat) &&
