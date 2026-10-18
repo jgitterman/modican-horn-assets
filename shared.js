@@ -318,7 +318,7 @@
   if (!g || g.closest('.pagemain')) return;
   var nav = document.createElement('div'); nav.className = 'tnav'; nav.hidden = true;
   nav.innerHTML = '<button type="button" aria-label="Previous team members">\u2190</button><button type="button" aria-label="More team members">\u2192</button>';
-  g.parentNode.insertBefore(nav, g.nextSibling);
+  var wrap = document.createElement('div'); wrap.className = 'tslider'; g.parentNode.insertBefore(wrap, g); wrap.appendChild(g); wrap.appendChild(nav);
   var b = nav.querySelectorAll('button');
   function step(){ var t = g.querySelector('.tile'); return t ? t.getBoundingClientRect().width + 20 : 300; }
   function sync(){
