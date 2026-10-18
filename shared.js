@@ -280,3 +280,34 @@
   var svg='<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>';
   document.querySelectorAll('.tile .pill[title="LinkedIn"]').forEach(function(a){ a.innerHTML = svg; });
 })();
+
+// anchor scrolling: one eased animation (native smooth-scroll stalls then jumps on long pages with reveals)
+(function(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var raf = 0;
+  function targetTop(el){ var m = parseFloat(getComputedStyle(el).scrollMarginTop) || 0; return Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - m); }
+  function go(el, push){
+    var from = window.pageYOffset, to = targetTop(el), d = to - from;
+    if (Math.abs(d) < 2) return;
+    var dur = Math.min(900, Math.max(450, Math.abs(d) * 0.45)), t0 = null;
+    cancelAnimationFrame(raf);
+    function step(t){
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / dur), e = p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2;
+      window.scrollTo({top: from + d * e, behavior: 'instant'});
+      if (p < 1) raf = requestAnimationFrame(step);
+    }
+    raf = requestAnimationFrame(step);
+    if (push) history.pushState(null, '', '#' + el.id);
+  }
+  ['wheel','touchstart','keydown'].forEach(function(ev){ addEventListener(ev, function(){ cancelAnimationFrame(raf); }, {passive:true}); });
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href*="#"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+    var u = new URL(a.href, location.href);
+    if (u.pathname.replace(/\/$/, '') !== location.pathname.replace(/\/$/, '') || !u.hash || u.hash === '#') return;
+    var el = document.getElementById(decodeURIComponent(u.hash.slice(1)));
+    if (!el) return;
+    e.preventDefault(); go(el, true);
+  });
+})();
