@@ -189,7 +189,7 @@
   // testimonial carousel: starts when in view; the active dot fills as a countdown
   var qs = document.getElementById('qstage');
   if (qs){
-    var qc = [].slice.call(qs.querySelectorAll('.qcard')), qn = document.getElementById('qnav'), qd = [].slice.call(qn.querySelectorAll('button')), n = qc.length, cur = 0;
+    var qc = [].slice.call(qs.querySelectorAll('.qcard')), qn = document.getElementById('qnav'), qd = [].slice.call(qn.querySelectorAll('a,button')), n = qc.length, cur = 0;
     qd.forEach(function(b){ b.appendChild(document.createElement('i')); });
     function show(k){
       cur = (k + n) % n;
@@ -209,7 +209,7 @@
       qs.addEventListener('qshow', function(){ qn.classList.toggle('paused', !!hov && hov.dataset.pos === '0'); });
     }
     qc.forEach(function(c, i){ c.addEventListener('click', function(e){ if (+c.dataset.pos !== 0){ e.preventDefault(); show(i); } }); });
-    qd.forEach(function(b, i){ b.addEventListener('click', function(){ show(i); }); });
+    qd.forEach(function(b, i){ b.addEventListener('click', function(e){ e.preventDefault(); show(i); }); });
     show(0);
   }
 

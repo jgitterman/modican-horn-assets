@@ -640,8 +640,8 @@ section[id]{scroll-margin-top:24px}
 .qstage .qcard[data-pos="1"]:hover,.qstage .qcard[data-pos="-1"]:hover{opacity:.6}
 .qstage .qcard blockquote{font-size:21px}
 .qnav{display:flex;justify-content:center;gap:8px;margin-top:26px}
-.qnav button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(247,244,236,.25);cursor:pointer;padding:0;transition:background .3s,width .3s}
-.qnav button.on{background:var(--gold-lt);width:24px;border-radius:8px}
+.qnav a,.qnav button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(247,244,236,.25);cursor:pointer;padding:0;transition:background .3s,width .3s}
+.qnav a.on,.qnav button.on{background:var(--gold-lt);width:24px;border-radius:8px}
 @media(max-width:760px){.qstage .qcard[data-pos="-1"],.qstage .qcard[data-pos="1"]{opacity:0;pointer-events:none}}
 /* result detail titles on one line */
 .pagehead.long .inner{max-width:1160px}
@@ -802,3 +802,7 @@ a{text-underline-offset:3px}
 .pagehead h1 .tx,.pagehead .ledeline .tx{display:inline}
 .w-richtext{margin:0}
 .w-richtext::before,.w-richtext::after{content:none}
+
+/* testimonial strip: Webflow converts dots to link buttons */
+.qnav a.w-button{min-width:0;font-size:0;line-height:0;text-decoration:none;box-sizing:border-box;display:block}
+.vnote{font-size:13px;color:rgba(247,244,236,.62);text-align:center;max-width:62ch;margin:22px auto 0}
