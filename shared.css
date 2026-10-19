@@ -50,7 +50,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 .zoom{overflow:hidden;border-radius:var(--r-lg)}
 .zoom img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.65,.3,1)}
 .zoom:hover img{transform:scale(1.04)}
-.logo-img{display:block;height:34px;width:auto}
+.logo-img{display:block;height:44px;width:auto}
 section{padding:110px 0}
 .shead{margin-bottom:52px}
 .shead.center{text-align:center}
@@ -704,7 +704,7 @@ section[id]{scroll-margin-top:24px}
 .stickynav.show{transform:none}
 .stickynav .hnav{max-width:none;margin:0;padding:14px 56px}
 .stickynav .navpill{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
-.stickynav .logo-img{height:30px}
+.stickynav .logo-img{height:38px}
 .stickynav .menupanel{background:rgba(24,20,15,.98)}
 @media(max-width:760px){.stickynav .hnav{padding:12px 20px}}
 @media (prefers-reduced-motion: reduce){.stickynav{transition:none}}
@@ -782,7 +782,7 @@ a{text-underline-offset:3px}
 .about-more{margin:-6px 0 26px}
 .results-more{text-align:center;margin-top:40px}
 .panel .bgi img{width:100%;height:100%;object-fit:cover;display:block}
-.f-top .logo-img{height:40px}
+.f-top .logo-img{height:48px}
 .f-top .office-2{margin-top:10px}
 .tile .pill svg{display:block}
 
