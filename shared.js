@@ -355,3 +355,19 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){fix()});else fix();
 })();
+
+/* Typographic glue (content-agnostic): keeps short conjunctions with the next word, and keeps suite/unit numbers
+   such as "STE 130-254" on one line, so edited copy never strands "and" or splits an address at a hyphen. */
+(function(){
+  function glue(root,re,fn){
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n,list=[];
+    while(n=w.nextNode())list.push(n);
+    list.forEach(function(t){var v=t.nodeValue,o=fn(v);if(o!==v)t.nodeValue=o;});
+  }
+  document.querySelectorAll('.acard p,.panel p,.step p').forEach(function(el){
+    glue(el,null,function(v){return v.replace(/\b(and|or)\s+(?=\S)/gi,'$1 ');});
+  });
+  document.querySelectorAll('.addr,.otxt p,.office-2').forEach(function(el){
+    glue(el,null,function(v){return v.replace(/\b(STE|Suite|Ste\.?|Unit|Apt\.?|Floor)\s+(?=\d)/g,'$1 ').replace(/(\d)-(\d)/g,'$1‑$2');});
+  });
+})();
