@@ -363,7 +363,7 @@
    - desktop-only <br class="dbr"> after sentence ends, em dashes and semicolons (opt out a paragraph's dash with data-wrap="inline-dash")
    - suite numbers like "STE 130-254" stay on one line */
 (function(){
-  var skip='nav,footer,.menupanel,.w-richtext,summary,details,.faq,.bio,.fine,.notice';
+  var skip='.otxt,.office,.addr,.office-2,nav,footer,.menupanel,.w-richtext,summary,details,.faq,.bio,.fine,.notice';
   function textNodes(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n,l=[];while(n=w.nextNode())l.push(n);return l;}
   document.querySelectorAll('p').forEach(function(p){
     if(p.closest(skip)||p.closest('.w-dyn-item'))return;
@@ -374,6 +374,14 @@
       var dashOK=p.getAttribute('data-wrap')!=='inline-dash';
       var parts=v.split(/((?:\u2014|;|[.!?])\s+(?=[A-Za-z\u201c"]))/);
       if(!dashOK){parts=v.split(/((?:;|[.!?])\s+(?=[A-Za-z\u201c"]))/);}
+      /* never break after abbreviations or initials (E., Blvd., Esq., Mr.) */
+      var fixed=[parts[0]];
+      for(var q=1;q<parts.length;q+=2){
+        var prev=fixed[fixed.length-1];
+        if(/^\./.test(parts[q])&&/(?:\b[A-Z]|\b(?:Mr|Mrs|Ms|Dr|St|Ave|Blvd|Rd|Ste|No|vs|Inc|LLC|Esq|Jr|Sr))$/.test(prev)){fixed[fixed.length-1]=prev+parts[q]+(parts[q+1]||'');}
+        else{fixed.push(parts[q]);fixed.push(parts[q+1]||'');}
+      }
+      parts=fixed;
       if(parts.length<3){t.nodeValue=v;return;}
       var frag=document.createDocumentFragment();
       for(var k=0;k<parts.length;k+=2){

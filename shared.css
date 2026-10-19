@@ -879,7 +879,7 @@ a{text-underline-offset:3px}
 @media(min-width:1001px){
   .hero p.hi{max-width:540px}
   .tnote{text-wrap:balance}
-  p.lede[data-wrap="narrow"]{max-width:500px}
+  p.lede[data-wrap="narrow"]{max-width:470px}
+  p[data-wrap="narrow-panel"]{max-width:400px}
   .caps .head{grid-template-columns:1fr minmax(0,480px)}
-  .panel p{text-wrap:balance}
 }
