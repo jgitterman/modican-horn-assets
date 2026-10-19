@@ -385,6 +385,6 @@
     });
   });
   document.querySelectorAll('.addr,.otxt p,.office-2').forEach(function(el){
-    textNodes(el).forEach(function(t){t.nodeValue=t.nodeValue.replace(/\b(STE|Suite|Ste\.?|Unit|Apt\.?|Floor)\s+(?=\d)/g,'$1\u00a0').replace(/(\d)-(\d)/g,'$1\u2011$2');});
+    textNodes(el).forEach(function(t){t.nodeValue=t.nodeValue.replace(/\b(STE|Suite|Ste\.?|Unit|Apt\.?|Floor)\s+(?=\d)/g,'$1\u00a0').replace(/(\d)-(\d)/g,'$1\u2011$2').replace(/(\d+)\s+([NSEW]\.)\s+/g,'$1\u00a0$2\u00a0');});
   });
 })();
