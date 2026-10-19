@@ -861,9 +861,7 @@ a{text-underline-offset:3px}
 .tile .label{cursor:pointer}
 .tile .pill[aria-label="Open profile"]{transform:none!important}
 .tile .pill[aria-label="Open profile"]::after{content:"";position:absolute;inset:0;border-radius:var(--r-md)}
-.tile .pill[aria-label="Open profile"] svg{transition:transform .25s}
 .tile .label:hover:not(:has(.pill[title="LinkedIn"]:hover)) .pill[aria-label="Open profile"],.tile .pill[aria-label="Open profile"]:focus-visible{background:var(--gold);color:var(--white)}
-.tile .label:hover:not(:has(.pill[title="LinkedIn"]:hover)) .pill[aria-label="Open profile"] svg{transform:translateX(2px)}
 /* No lift on either pill: color change only */
 .tile .pill:hover{transform:none}
 .tile .pill[title="LinkedIn"]{position:relative;z-index:2}

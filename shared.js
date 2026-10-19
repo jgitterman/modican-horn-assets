@@ -279,6 +279,12 @@
 (function(){
   var svg='<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>';
   document.querySelectorAll('.tile .pill[title="LinkedIn"]').forEach(function(a){ a.innerHTML = svg; });
+  /* Profile pill: user icon, placed first (DOM order, so keyboard order matches what you see) */
+  var user='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>';
+  document.querySelectorAll('.tile .pill[aria-label="Open profile"]').forEach(function(a){
+    a.innerHTML = user;
+    var box = a.parentNode; if (box && box.firstElementChild !== a) box.insertBefore(a, box.firstElementChild);
+  });
 })();
 
 // anchor scrolling: one eased animation (native smooth-scroll stalls then jumps on long pages with reveals)
