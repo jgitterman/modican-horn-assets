@@ -356,18 +356,33 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){fix()});else fix();
 })();
 
-/* Typographic glue (content-agnostic): keeps short conjunctions with the next word, and keeps suite/unit numbers
-   such as "STE 130-254" on one line, so edited copy never strands "and" or splits an address at a hyphen. */
+/* Typographic glue + desktop soft breaks (content-agnostic; applies to short intro paragraphs only).
+   - keeps "and"/"or" with the next word, so they never dangle at a line end
+   - non-breaking hyphen inside compounds (trial-ready, minority-owned, first- and third-party)
+   - em dash stays attached to the word before it
+   - desktop-only <br class="dbr"> after sentence ends, em dashes and semicolons
+   - suite numbers like "STE 130-254" stay on one line */
 (function(){
-  function glue(root,re,fn){
-    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n,list=[];
-    while(n=w.nextNode())list.push(n);
-    list.forEach(function(t){var v=t.nodeValue,o=fn(v);if(o!==v)t.nodeValue=o;});
-  }
-  document.querySelectorAll('.acard p,.panel p,.step p').forEach(function(el){
-    glue(el,null,function(v){return v.replace(/\b(and|or)\s+(?=\S)/gi,'$1 ');});
+  var skip='nav,footer,.menupanel,.w-richtext,summary,details,.faq,.bio,.fine,.notice';
+  function textNodes(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n,l=[];while(n=w.nextNode())l.push(n);return l;}
+  document.querySelectorAll('p').forEach(function(p){
+    if(p.closest(skip)||p.closest('.w-dyn-item'))return;
+    var txt=p.textContent;if(txt.length>230||txt.length<30)return;
+    textNodes(p).forEach(function(t){
+      var v=t.nodeValue;
+      v=v.replace(/\b(and|or)\s+(?=\S)/gi,'$1\u00a0').replace(/([A-Za-z])-([A-Za-z])/g,'$1\u2011$2').replace(/([A-Za-z])-\s+(?=(and|or)\b)/gi,'$1\u2011\u00a0').replace(/\s+\u2014/g,'\u00a0\u2014');
+      var parts=v.split(/((?:\u2014|;|[.!?])\s+(?=[A-Za-z\u201c"]))/);
+      if(parts.length<3){t.nodeValue=v;return;}
+      var frag=document.createDocumentFragment();
+      for(var k=0;k<parts.length;k+=2){
+        var seg=parts[k]+(parts[k+1]?parts[k+1].replace(/\s+$/,' '):'');
+        frag.appendChild(document.createTextNode(seg));
+        if(parts[k+1]){var br=document.createElement('br');br.className='dbr';frag.appendChild(br);}
+      }
+      t.parentNode.replaceChild(frag,t);
+    });
   });
   document.querySelectorAll('.addr,.otxt p,.office-2').forEach(function(el){
-    glue(el,null,function(v){return v.replace(/\b(STE|Suite|Ste\.?|Unit|Apt\.?|Floor)\s+(?=\d)/g,'$1 ').replace(/(\d)-(\d)/g,'$1‑$2');});
+    textNodes(el).forEach(function(t){t.nodeValue=t.nodeValue.replace(/\b(STE|Suite|Ste\.?|Unit|Apt\.?|Floor)\s+(?=\d)/g,'$1\u00a0').replace(/(\d)-(\d)/g,'$1\u2011$2');});
   });
 })();
