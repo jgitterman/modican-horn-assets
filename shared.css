@@ -866,3 +866,6 @@ a{text-underline-offset:3px}
 .tile .pill:hover{transform:none}
 .tile .pill[title="LinkedIn"]{position:relative;z-index:2}
 .tile .pill[aria-label="Open profile"]:focus-visible::after{outline:2px solid var(--gold);outline-offset:2px}
+
+/* Keep ", Esq." attached to the surname so it never wraps alone onto its own line */
+.tile h3 .esq,.sig .n .esq{white-space:nowrap}
