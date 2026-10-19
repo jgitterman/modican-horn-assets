@@ -870,7 +870,14 @@ a{text-underline-offset:3px}
 /* Keep ", Esq." attached to the surname so it never wraps alone onto its own line */
 .tile h3 .esq,.sig .n .esq{white-space:nowrap}
 
-/* Desktop-only soft breaks (inserted by shared.js after sentence ends, em dashes and semicolons in short intro copy).
+/* Desktop-only soft breaks (inserted by shared.js after sentence ends and semicolons in short intro copy).
    Hidden below 1001px so tablet and mobile wrap naturally; nothing is hard-coded to specific wording. */
 .dbr{display:none}
 @media(min-width:1001px){.dbr{display:inline}}
+
+/* Per-block width tuning for desktop line breaks (set with a data-wrap attribute in the Designer; no effect below 1001px) */
+@media(min-width:1001px){
+  .hero p.hi{max-width:540px}
+  .tnote{text-wrap:balance}
+  [data-wrap="narrow"]{max-width:530px}
+}

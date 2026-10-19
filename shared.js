@@ -360,7 +360,7 @@
    - keeps "and"/"or" with the next word, so they never dangle at a line end
    - non-breaking hyphen inside compounds (trial-ready, minority-owned, first- and third-party)
    - em dash stays attached to the word before it
-   - desktop-only <br class="dbr"> after sentence ends, em dashes and semicolons
+   - desktop-only <br class="dbr"> after sentence ends and semicolons
    - suite numbers like "STE 130-254" stay on one line */
 (function(){
   var skip='nav,footer,.menupanel,.w-richtext,summary,details,.faq,.bio,.fine,.notice';
@@ -370,8 +370,8 @@
     var txt=p.textContent;if(txt.length>230||txt.length<30)return;
     textNodes(p).forEach(function(t){
       var v=t.nodeValue;
-      v=v.replace(/\b(and|or)\s+(?=\S)/gi,'$1\u00a0').replace(/([A-Za-z])-([A-Za-z])/g,'$1\u2011$2').replace(/([A-Za-z])-\s+(?=(and|or)\b)/gi,'$1\u2011\u00a0').replace(/\s+\u2014/g,'\u00a0\u2014');
-      var parts=v.split(/((?:\u2014|;|[.!?])\s+(?=[A-Za-z\u201c"]))/);
+      v=v.replace(/\b(and|or|the|an?)\s+(?=\S)/gi,'$1\u00a0').replace(/([A-Za-z])-([A-Za-z])/g,'$1\u2011$2').replace(/([A-Za-z])-\s+(?=(and|or)\b)/gi,'$1\u2011\u00a0').replace(/\s+\u2014/g,'\u00a0\u2014');
+      var parts=v.split(/((?:;|[.!?])\s+(?=[A-Za-z\u201c"]))/);
       if(parts.length<3){t.nodeValue=v;return;}
       var frag=document.createDocumentFragment();
       for(var k=0;k<parts.length;k+=2){
