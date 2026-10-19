@@ -854,3 +854,15 @@ a{text-underline-offset:3px}
 /* Intake form: all single-line controls share one height */
 .field input,.field select{box-sizing:border-box;height:52px;min-height:52px;line-height:1.4;padding-top:0;padding-bottom:0}
 .field textarea{box-sizing:border-box}
+
+/* Team tiles: the whole nameplate is one link. The "Open profile" link stretches over .label (its positioned parent);
+   the arrow pill lights up when anywhere on the nameplate is hovered. Profile pill must not use transform, which would
+   become the containing block for the stretched ::after. LinkedIn pill sits above the overlay. */
+.tile .label{cursor:pointer}
+.tile .pill[aria-label="Open profile"]{transform:none!important}
+.tile .pill[aria-label="Open profile"]::after{content:"";position:absolute;inset:0;border-radius:var(--r-md)}
+.tile .pill[aria-label="Open profile"] svg{transition:transform .25s}
+.tile .label:hover .pill[aria-label="Open profile"],.tile .pill[aria-label="Open profile"]:focus-visible{background:var(--gold);color:var(--white)}
+.tile .label:hover .pill[aria-label="Open profile"] svg{transform:translateX(2px)}
+.tile .pill[title="LinkedIn"]{position:relative;z-index:2}
+.tile .pill[aria-label="Open profile"]:focus-visible::after{outline:2px solid var(--gold);outline-offset:2px}
