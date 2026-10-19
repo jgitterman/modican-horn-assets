@@ -879,5 +879,5 @@ a{text-underline-offset:3px}
 @media(min-width:1001px){
   .hero p.hi{max-width:540px}
   .tnote{text-wrap:balance}
-  [data-wrap="narrow"]{max-width:530px}
+  p.lede[data-wrap="narrow"]{max-width:530px}
 }
