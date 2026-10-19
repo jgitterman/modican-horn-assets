@@ -7,7 +7,7 @@
       }
 
       .cls-2 {
-        stroke: #926524;
+        stroke: #D2AC66;
         stroke-width: 5px;
       }
 
@@ -16,7 +16,7 @@
       }
 
       .cls-4 {
-        fill: #926524;
+        fill: #D2AC66;
       }
 
       .cls-5 {
