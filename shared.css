@@ -840,3 +840,6 @@ a{text-underline-offset:3px}
 .avs img,.sig img,.tcard .who img,.fcard img{object-position:50% 8%}
 .avs img,.sig img,.tcard .who img{object-view-box:inset(3% 7% 33% 7%)}
 .fcard img{object-view-box:inset(3% 7% 23% 7%)}
+
+/* Hide the LinkedIn pill when the attorney has no LinkedIn URL (CMS link renders as "#" or empty) */
+.pill[title="LinkedIn"]:not([href^="http"]){display:none}

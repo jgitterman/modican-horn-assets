@@ -334,3 +334,18 @@
   addEventListener('load', sync);
   sync();
 })();
+
+/* External links open in a new tab (covers CMS-bound links, footer social, directions) */
+(function(){
+  function fix(root){
+    (root||document).querySelectorAll('a[href]').forEach(function(a){
+      var h=a.getAttribute('href')||'';
+      if(!/^https?:\/\//i.test(h)||a.hostname===location.hostname)return;
+      a.target='_blank';
+      var rel=(a.getAttribute('rel')||'').split(/\s+/).filter(Boolean);
+      ['noopener','noreferrer'].forEach(function(r){if(rel.indexOf(r)<0)rel.push(r)});
+      a.setAttribute('rel',rel.join(' '));
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){fix()});else fix();
+})();
