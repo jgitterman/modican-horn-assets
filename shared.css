@@ -929,3 +929,5 @@ a{text-underline-offset:3px}
 .rcard:has(.tlink){cursor:pointer}
 .rcard .tlink:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
 .acard{cursor:pointer}
+
+.slugv,.subslugv{display:none!important}

@@ -96,7 +96,11 @@
   });
 
   /* Result cards anywhere on the site (home, hub, practice pages, results): URLs are built from slugs bound on each CMS card */
-  document.querySelectorAll('.rcard[data-slug]').forEach(function(c){
+  document.querySelectorAll('.rcard').forEach(function(c){
+    /* Webflow can't persist attribute bindings on every card, so slugs also come from hidden CMS-bound text (.slugv / .subslugv) */
+    var sv = c.querySelector('.slugv'), bv = c.querySelector('.subslugv');
+    if (!c.dataset.slug && sv) c.dataset.slug = sv.textContent.trim();
+    if (!c.dataset.subslug && bv) c.dataset.subslug = bv.textContent.trim();
     var r = c.querySelector('.tlink'), a = c.querySelector('.chips a.chip');
     r && r.setAttribute('href', '/results/' + c.dataset.slug);
     if (a) { if (c.dataset.subslug) a.setAttribute('href', '/practice-sub-pages/' + c.dataset.subslug); else a.removeAttribute('href'); }
