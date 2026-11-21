@@ -98,11 +98,16 @@
   /* Result cards anywhere on the site (home, hub, practice pages, results): URLs are built from slugs bound on each CMS card */
   document.querySelectorAll('.rcard').forEach(function(c){
     /* Webflow can't persist attribute bindings on every card, so slugs also come from hidden CMS-bound text (.slugv / .subslugv) */
-    var sv = c.querySelector('.slugv'), bv = c.querySelector('.subslugv');
-    if (!c.dataset.slug && sv) c.dataset.slug = sv.textContent.trim();
-    if (!c.dataset.subslug && bv) c.dataset.subslug = bv.textContent.trim();
+    /* Webflow strips the class from these two holders, so they are the last two class-less direct child divs: slug, then sub-page slug */
+    var hv = [].slice.call(c.children).filter(function(k){ return k.tagName === 'DIV' && !k.className; });
+    if (hv.length >= 2){
+      var sv = hv[hv.length - 2], bv = hv[hv.length - 1];
+      if (!c.dataset.slug) c.dataset.slug = sv.textContent.trim();
+      if (!c.dataset.subslug) c.dataset.subslug = bv.textContent.trim();
+      sv.hidden = bv.hidden = true;
+    }
     var r = c.querySelector('.tlink'), a = c.querySelector('.chips a.chip');
-    r && r.setAttribute('href', '/results/' + c.dataset.slug);
+    if (r && c.dataset.slug) r.setAttribute('href', '/results/' + c.dataset.slug);
     if (a) { if (c.dataset.subslug) a.setAttribute('href', '/practice-sub-pages/' + c.dataset.subslug); else a.removeAttribute('href'); }
     /* Whole card opens the result (JS so it works regardless of Webflow link markup); inner links keep their own target */
     c.style.cursor = 'pointer';

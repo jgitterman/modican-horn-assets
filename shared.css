@@ -931,3 +931,5 @@ a{text-underline-offset:3px}
 .acard{cursor:pointer}
 
 .slugv,.subslugv{display:none!important}
+
+.rcard>div:not([class]){display:none!important}
