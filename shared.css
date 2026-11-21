@@ -883,3 +883,6 @@ a{text-underline-offset:3px}
   p[data-wrap="narrow-panel"]{max-width:400px}
   .caps .head{grid-template-columns:1fr minmax(0,480px)}
 }
+
+/* Results: Matter type dropdown (replaces the sub-filter button rows) */
+.fbar .ms[hidden],.fbar .opt[hidden]{display:none}

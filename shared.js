@@ -100,12 +100,16 @@
   if (grid){
     var PAGE = 4, shown = PAGE, cat = 'all', sel = {outcome:[], county:[], team:[], area:[]};
     var cards = [].slice.call(grid.querySelectorAll('.rcard'));
+    /* Cards and sub-page options come from the Webflow CMS: practice arrives as its full name, normalise to the bus/ins keys the toggle uses */
+    var catKey = function(v){ return /^bus/i.test(v || '') ? 'bus' : 'ins'; };
+    cards.forEach(function(c){ c.dataset.cat = catKey(c.dataset.cat); });
+    var subSrc = [].slice.call(document.querySelectorAll('#subs [data-sub]'));
     var more = document.getElementById('loadmore'), cnt = document.getElementById('fcount'), empty = document.getElementById('fempty');
     /* Webflow turns buttons into links: stop them navigating */
-    document.querySelectorAll('#fbar a, #subs a, .more-row a, #fempty a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); }); });
+    document.querySelectorAll('#fbar a, .more-row a, #fempty a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); }); });
     /* Webflow drops mixed inline content in the dropdown buttons: rebuild label + value */
     (function(){
-      var L={outcome:'Outcome',county:'County',team:'Attorney'};
+      var L={area:'Matter type',outcome:'Outcome',county:'County',team:'Attorney'};
       document.querySelectorAll('#fbar .ms').forEach(function(m){
         var b=m.querySelector('.msbtn'); if(!b||b.querySelector('.mslbl')) return;
         b.innerHTML='<span class="mslbl">'+L[m.dataset.k]+'</span><b class="msval">All</b>';
@@ -113,28 +117,29 @@
     })();
     /* Webflow can't hold checkboxes outside a form, so the filter options are generated here from the cards. */
     (function(){
-      var names={horn:'Daniel C. Horn',modican:'JoeMarie R. Modican',latham:'Terese M. Latham'};
       document.querySelectorAll('#fbar .ms').forEach(function(m){
         var p=m.querySelector('.mspanel'); if(!p||p.querySelector('.opt')) return;
-        var k=m.dataset.k, set={};
-        cards.forEach(function(c){ var v=c.dataset[k]||''; (k==='team'?v.split(' '):[v]).forEach(function(x){ if(x) set[x]=1; }); });
-        if(k==='team'){ set.horn=set.modican=set.latham=1; }
+        var k=m.dataset.k, set={}, areaCat={};
+        cards.forEach(function(c){ var v=c.dataset[k]||''; if(v) set[v]=1; if(k==='area' && v) areaCat[v]=c.dataset.cat; });
+        /* matter types also come from the Practice Sub-Pages collection, so a type is listed even before it has a result */
+        if(k==='area') subSrc.forEach(function(s){ var v=s.dataset.v; if(v){ set[v]=1; areaCat[v]=catKey(s.dataset.cat); } });
         var foot=p.querySelector('.msfoot');
-        Object.keys(set).sort(function(x,y){ return (names[x]||x).localeCompare(names[y]||y); }).forEach(function(v){
+        Object.keys(set).sort(function(x,y){ return x.localeCompare(y); }).forEach(function(v){
           var l=document.createElement('label'); l.className='opt';
+          if(k==='area') l.dataset.cat=areaCat[v];
           var i=document.createElement('input'); i.type='checkbox'; i.value=v;
-          var t=document.createElement('span'); t.textContent=names[v]||v;
+          var t=document.createElement('span'); t.textContent=v;
           l.appendChild(i); l.appendChild(t); p.insertBefore(l,foot);
         });
       });
     })();
-    var mss = [].slice.call(document.querySelectorAll('#fbar .ms')), subs = [].slice.call(document.querySelectorAll('#subs .subf'));
-    function ok(c, skipArea){
+    var mss = [].slice.call(document.querySelectorAll('#fbar .ms'));
+    function ok(c){
       return (cat === 'all' || c.dataset.cat === cat) &&
         (!sel.outcome.length || sel.outcome.indexOf(c.dataset.outcome) > -1) &&
         (!sel.county.length || sel.county.indexOf(c.dataset.county) > -1) &&
-        (!sel.team.length || c.dataset.team.split(' ').some(function(t){ return sel.team.indexOf(t) > -1; })) &&
-        (skipArea || !sel.area.length || sel.area.indexOf(c.dataset.area) > -1);
+        (!sel.team.length || (c.dataset.team || '').split('|').some(function(t){ return sel.team.indexOf(t) > -1; })) &&
+        (!sel.area.length || sel.area.indexOf(c.dataset.area) > -1);
     }
     function apply(){
       var match = cards.filter(function(c){ return ok(c); });
@@ -143,18 +148,11 @@
       cnt.textContent = match.length ? ('Showing ' + Math.min(shown, match.length) + ' of ' + match.length + (match.length === 1 ? ' result' : ' results')) : 'No matching results';
       more.parentNode.hidden = match.length <= shown;
       empty.hidden = match.length > 0;
-      var subsEl = document.getElementById('subs'), h0 = subsEl.offsetHeight;
-      document.querySelectorAll('#subs .subrow').forEach(function(r){ r.hidden = r.dataset.for !== cat; });
-      document.getElementById('fbar').classList.toggle('hassub', cat !== 'all');
-      var h1 = subsEl.offsetHeight;
-      if (h0 !== h1 && !reduced){
-        subsEl.animate({height:[h0 + 'px', h1 + 'px']}, {duration:420, easing:'cubic-bezier(.2,.65,.3,1)'});
-        var vis = subsEl.querySelector('.subrow:not([hidden])');
-        if (vis) vis.animate({opacity:[0,1], transform:['translateY(-6px)','none']}, {duration:380, delay:60, easing:'cubic-bezier(.2,.65,.3,1)', fill:'backwards'});
-      }
-      subs.forEach(function(b){
-        var n = cards.filter(function(c){ return ok(c, true) && c.dataset.area === b.dataset.v; }).length;
-        b.innerHTML = b.dataset.v + '<span class="c">' + n + '</span>'; b.disabled = n === 0 && !b.classList.contains('on'); b.classList.toggle('dis', b.disabled);
+      /* the Matter type dropdown only shows once a practice is chosen, and lists only that practice's types */
+      mss.forEach(function(m){
+        if (m.dataset.k !== 'area') return;
+        m.hidden = cat === 'all';
+        m.querySelectorAll('.opt').forEach(function(l){ l.hidden = l.dataset.cat !== cat; });
       });
       mss.forEach(function(m){
         var v = sel[m.dataset.k], out = m.querySelector('.msval');
@@ -174,12 +172,11 @@
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeAll(); });
     document.querySelectorAll('#fbar .seg [data-f]').forEach(function(b){
       b.addEventListener('click', function(){ document.querySelectorAll('#fbar .seg [data-f]').forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
-        cat = b.dataset.f; sel.area = []; subs.forEach(function(s){ s.classList.remove('on'); }); shown = PAGE; apply(); });
+        cat = b.dataset.f; sel.area = []; document.querySelectorAll('#fbar .ms[data-k="area"] input').forEach(function(x){ x.checked = false; }); shown = PAGE; apply(); });
     });
-    subs.forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('on'); sel.area = subs.filter(function(s){ return s.classList.contains('on'); }).map(function(s){ return s.dataset.v; }); shown = PAGE; apply(); }); });
     function reset(){ cat = 'all'; sel = {outcome:[], county:[], team:[], area:[]}; shown = PAGE;
       document.querySelectorAll('#fbar .seg [data-f]').forEach(function(x,i){ x.classList.toggle('on', i === 0); });
-      document.querySelectorAll('#fbar input').forEach(function(x){ x.checked = false; }); subs.forEach(function(s){ s.classList.remove('on'); }); apply(); }
+      document.querySelectorAll('#fbar input').forEach(function(x){ x.checked = false; }); apply(); }
     document.getElementById('freset').addEventListener('click', reset);
     document.getElementById('freset2').addEventListener('click', reset);
     more.addEventListener('click', function(){ shown += PAGE; apply(); });
