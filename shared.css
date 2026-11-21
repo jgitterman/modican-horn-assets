@@ -886,3 +886,5 @@ a{text-underline-offset:3px}
 
 /* Results: Matter type dropdown (replaces the sub-filter button rows) */
 .fbar .ms[hidden],.fbar .opt[hidden]{display:none}
+/* Results: the sub-page data list only feeds the Matter type dropdown; never show it or its empty state */
+#subs,#subs[hidden],#subs *{display:none!important}
