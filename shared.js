@@ -95,6 +95,13 @@
     });
   });
 
+  /* Result cards anywhere on the site (home, hub, practice pages, results): URLs are built from slugs bound on each CMS card */
+  document.querySelectorAll('.rcard[data-slug]').forEach(function(c){
+    var r = c.querySelector('.tlink'), a = c.querySelector('.chips a.chip');
+    r && r.setAttribute('href', '/results/' + c.dataset.slug);
+    if (a) { if (c.dataset.subslug) a.setAttribute('href', '/practice-sub-pages/' + c.dataset.subslug); else a.removeAttribute('href'); }
+  });
+
   // results: multi-select filters, practice sub-filters, load more
   var grid = document.getElementById('rgrid');
   if (grid){
@@ -146,12 +153,12 @@
       });
     })();
     var mss = [].slice.call(document.querySelectorAll('#fbar .ms'));
-    function ok(c){
+    function ok(c, skip){
       return (cat === 'all' || c.dataset.cat === cat) &&
-        (!sel.outcome.length || sel.outcome.indexOf(c.dataset.outcome) > -1) &&
-        (!sel.county.length || sel.county.indexOf(c.dataset.county) > -1) &&
-        (!sel.team.length || (c.dataset.team || '').split('|').some(function(t){ return sel.team.indexOf(t) > -1; })) &&
-        (!sel.area.length || sel.area.indexOf(c.dataset.area) > -1);
+        (skip === 'outcome' || !sel.outcome.length || sel.outcome.indexOf(c.dataset.outcome) > -1) &&
+        (skip === 'county' || !sel.county.length || sel.county.indexOf(c.dataset.county) > -1) &&
+        (skip === 'team' || !sel.team.length || (c.dataset.team || '').split('|').some(function(t){ return sel.team.indexOf(t) > -1; })) &&
+        (skip === 'area' || !sel.area.length || sel.area.indexOf(c.dataset.area) > -1);
     }
     function apply(){
       var match = cards.filter(function(c){ return ok(c); });
@@ -165,6 +172,18 @@
         if (m.dataset.k !== 'area') return;
         m.hidden = cat === 'all';
         m.querySelectorAll('.opt').forEach(function(l){ l.hidden = l.dataset.cat !== cat; });
+      });
+      /* each option shows how many results it would give with the other filters applied */
+      mss.forEach(function(m){
+        var k = m.dataset.k;
+        m.querySelectorAll('.opt').forEach(function(l){
+          var v = l.querySelector('input').value, n = cards.filter(function(c){
+            if (!ok(c, k)) return false;
+            return k === 'team' ? (c.dataset.team || '').split('|').indexOf(v) > -1 : c.dataset[k] === v;
+          }).length;
+          var b = l.querySelector('.cnt'); if (!b){ b = document.createElement('em'); b.className = 'cnt'; l.appendChild(b); }
+          b.textContent = n; l.classList.toggle('zero', n === 0);
+        });
       });
       mss.forEach(function(m){
         var v = sel[m.dataset.k], out = m.querySelector('.msval');
@@ -293,6 +312,12 @@
   document.querySelectorAll('.tile .pill[aria-label="Open profile"]').forEach(function(a){
     a.innerHTML = user;
     var box = a.parentNode; if (box && box.firstElementChild !== a) box.insertBefore(a, box.firstElementChild);
+    /* Whole tile opens the profile: profile URL from the bound slug, plus an overlay link over the photo */
+    var tile = a.closest('.tile'); if (!tile) return;
+    if (tile.dataset.slug) a.setAttribute('href', '/attorneys/' + tile.dataset.slug);
+    var href = a.getAttribute('href'); if (!href || href === '#' || href === '/firm') return;
+    var o = document.createElement('a'); o.className = 'tilelink'; o.href = href; o.tabIndex = -1; o.setAttribute('aria-hidden', 'true');
+    tile.insertBefore(o, tile.firstChild);
   });
 })();
 
