@@ -100,6 +100,9 @@
     var r = c.querySelector('.tlink'), a = c.querySelector('.chips a.chip');
     r && r.setAttribute('href', '/results/' + c.dataset.slug);
     if (a) { if (c.dataset.subslug) a.setAttribute('href', '/practice-sub-pages/' + c.dataset.subslug); else a.removeAttribute('href'); }
+    /* Whole card opens the result (JS so it works regardless of Webflow link markup); inner links keep their own target */
+    c.style.cursor = 'pointer';
+    c.addEventListener('click', function(e){ if (e.target.closest('a')) return; if (r && r.getAttribute('href')) window.location.href = r.getAttribute('href'); });
   });
 
   /* Matter cards: the whole card opens its sub-page (the heading link is the real, keyboard-focusable link) */
