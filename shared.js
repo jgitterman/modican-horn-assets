@@ -102,6 +102,12 @@
     if (a) { if (c.dataset.subslug) a.setAttribute('href', '/practice-sub-pages/' + c.dataset.subslug); else a.removeAttribute('href'); }
   });
 
+  /* Matter cards: the whole card opens its sub-page (the heading link is the real, keyboard-focusable link) */
+  document.querySelectorAll('.acard').forEach(function(c){
+    var a = c.querySelector('a.acardlink, a[href]'); if (!a) return;
+    c.addEventListener('click', function(e){ if (e.target.closest('a')) return; a.click(); });
+  });
+
   // results: multi-select filters, practice sub-filters, load more
   var grid = document.getElementById('rgrid');
   if (grid){
