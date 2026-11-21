@@ -888,3 +888,13 @@ a{text-underline-offset:3px}
 .fbar .ms[hidden],.fbar .opt[hidden]{display:none}
 /* Results: the sub-page data list only feeds the Matter type dropdown; never show it or its empty state */
 #subs,#subs[hidden],#subs *{display:none!important}
+
+/* Results card: chips stay on one line (long names truncate) */
+.rindex .rcard .chips{flex-wrap:nowrap;min-width:0;padding-right:72px}
+.rindex .rcard .chip{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:0 1 auto;text-decoration:none}
+.rindex .rcard a.chip[href]:hover{border-color:var(--gold-lt)}
+/* Matter cards: whole card links to its sub-page via the heading link */
+.acard{position:relative}
+.acard .acardlink{color:inherit;text-decoration:none}
+.acard .acardlink::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.acard .acardlink:focus-visible{outline:2px solid var(--gold);outline-offset:4px}

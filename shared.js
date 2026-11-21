@@ -104,6 +104,17 @@
     var catKey = function(v){ return /^bus/i.test(v || '') ? 'bus' : 'ins'; };
     cards.forEach(function(c){ c.dataset.cat = catKey(c.dataset.cat); });
     var subSrc = [].slice.call(document.querySelectorAll('#subs [data-sub]'));
+    /* Result and sub-page URLs are built from slugs bound on each CMS card, so links never depend on Designer link settings */
+    cards.forEach(function(c){
+      var r = c.querySelector('.tlink'), a = c.querySelector('.chips a.chip');
+      if (r && c.dataset.slug) r.setAttribute('href', '/results/' + c.dataset.slug);
+      if (a) { if (c.dataset.subslug) a.setAttribute('href', '/practice-sub-pages/' + c.dataset.subslug); else a.removeAttribute('href'); }
+    });
+    /* Every matter type is always offered, even with zero results. Published sub-pages add to this list automatically. */
+    var ALL_AREAS = {
+      bus: ['Commercial & Contract Disputes','Business Torts','Partnership & Shareholder Disputes','Premises & Products Liability','Catastrophic Injury & Industrial Accidents','Healthcare & Professional Negligence'],
+      ins: ['Bodily Injury (BI)','UM / UIM','Personal Injury Protection (PIP)','First-Party Property','Coverage Analysis & Disputes','Bad Faith','Interpleader','Examinations Under Oath','Pre-Suit Strategy & Global Settlements']
+    };
     var more = document.getElementById('loadmore'), cnt = document.getElementById('fcount'), empty = document.getElementById('fempty');
     /* Webflow turns buttons into links: stop them navigating */
     document.querySelectorAll('#fbar a, .more-row a, #fempty a').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); }); });
@@ -122,6 +133,7 @@
         var k=m.dataset.k, set={}, areaCat={};
         cards.forEach(function(c){ var v=c.dataset[k]||''; if(v) set[v]=1; if(k==='area' && v) areaCat[v]=c.dataset.cat; });
         /* matter types also come from the Practice Sub-Pages collection, so a type is listed even before it has a result */
+        if(k==='area') Object.keys(ALL_AREAS).forEach(function(c){ ALL_AREAS[c].forEach(function(v){ set[v]=1; areaCat[v]=c; }); });
         if(k==='area') subSrc.forEach(function(s){ var v=s.dataset.v; if(v){ set[v]=1; areaCat[v]=catKey(s.dataset.cat); } });
         var foot=p.querySelector('.msfoot');
         Object.keys(set).sort(function(x,y){ return x.localeCompare(y); }).forEach(function(v){
