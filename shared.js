@@ -287,6 +287,13 @@
       });
       qs.addEventListener('qshow', function(){ qn.classList.toggle('paused', !!hov && hov.dataset.pos === '0'); });
     }
+    ['prev','next'].forEach(function(dir){
+      var ar = document.createElement('button'); ar.type = 'button'; ar.className = 'qarr ' + dir;
+      ar.setAttribute('aria-label', dir === 'prev' ? 'Previous testimonial' : 'Next testimonial');
+      ar.textContent = dir === 'prev' ? '\u2190' : '\u2192';
+      ar.addEventListener('click', function(){ show(cur + (dir === 'prev' ? -1 : 1)); });
+      qs.appendChild(ar);
+    });
     qc.forEach(function(c, i){ c.addEventListener('click', function(e){ if (+c.dataset.pos !== 0){ e.preventDefault(); show(i); } }); });
     qd.forEach(function(b, i){ b.addEventListener('click', function(e){ e.preventDefault(); show(i); }); });
     show(0);
