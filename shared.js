@@ -114,6 +114,27 @@
     c.addEventListener('click', function(e){ if (e.target.closest('a')) return; if (r && r.getAttribute('href')) window.location.href = r.getAttribute('href'); });
   });
 
+  /* Result detail page: related outcomes. Same-practice results first, never the current one, two shown. */
+  document.querySelectorAll('[data-cls]').forEach(function(e){ e.classList.add(e.getAttribute('data-cls')); });
+  (function(){
+    var sec = null;
+    document.querySelectorAll('main section').forEach(function(s){ var h = s.querySelector('h2'); if (h && /^More outcomes/.test(h.textContent.trim()) && s.querySelector('.rcard')) sec = s; });
+    if (!sec) return;
+    sec.classList.add('rel'); var rh = sec.querySelector('h2'); if (rh && rh.parentNode) rh.parentNode.classList.add('relhead');
+    var cur = location.pathname.replace(/\/+$/, '').split('/').pop();
+    var hp = document.querySelector('.pagehead .jump.static > *'), prac = hp ? hp.textContent.trim() : '';
+    var cards = [].slice.call(sec.querySelectorAll('.rcard')).filter(function(c){
+      var hv = [].slice.call(c.children).filter(function(k){ return k.tagName === 'DIV' && !k.className; });
+      var slug = hv.length >= 2 ? hv[hv.length - 2].textContent.trim() : '';
+      if (slug && slug === cur){ c.hidden = true; c.style.display = 'none'; return false; }
+      return true;
+    });
+    var same = cards.filter(function(c){ var ch = c.querySelector('.chips .chip'); return ch && ch.textContent.trim() === prac; });
+    var rest = cards.filter(function(c){ return same.indexOf(c) < 0; });
+    same.concat(rest).forEach(function(c, i){ if (i >= 2){ c.hidden = true; c.style.display = 'none'; } });
+    if (!cards.length) sec.style.display = 'none';
+  })();
+
   /* Matter cards: the whole card opens its sub-page (the heading link is the real, keyboard-focusable link) */
   document.querySelectorAll('.acard').forEach(function(c){
     var a = c.querySelector('a.acardlink, a[href]'); if (!a) return;
