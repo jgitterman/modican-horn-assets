@@ -955,3 +955,9 @@ a{text-underline-offset:3px}
 /* Result detail: larger section headings (weight stays 400, per locked type) */
 .step2 h3{font-size:clamp(30px,3.2vw,40px);line-height:1.15;letter-spacing:-.01em;color:var(--ink);margin-bottom:16px;text-wrap:balance}
 .step2{padding:36px 0}
+/* Webflow adds .w-button (default blue #3898ec) to links with type=button, e.g. #loadmore; restore .btn variants */
+.btn.w-button{padding:15px 28px;line-height:inherit;border-radius:100px}
+.btn-line.w-button{background-color:transparent;color:var(--ink)}
+.btn-line.w-button:hover{background-color:var(--ink);color:var(--cream)}
+.btn-dark.w-button{background-color:var(--dark);color:var(--cream)}
+.btn-dark.w-button:hover{background-color:var(--gold);color:var(--white)}
