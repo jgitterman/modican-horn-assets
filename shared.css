@@ -952,3 +952,6 @@ a{text-underline-offset:3px}
 .rel{padding:96px 0 104px;margin-top:0}
 .rel .relhead{margin-bottom:32px;align-items:center}
 .rel .rgrid{margin-top:0}
+/* Result detail: larger section headings (weight stays 400, per locked type) */
+.step2 h3{font-size:clamp(30px,3.2vw,40px);line-height:1.15;letter-spacing:-.01em;color:var(--ink);margin-bottom:16px;text-wrap:balance}
+.step2{padding:36px 0}
