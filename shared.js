@@ -141,6 +141,18 @@
     c.addEventListener('click', function(e){ if (e.target.closest('a')) return; a.click(); });
   });
 
+  // result facts: link "Handled by" attorney name to their profile (slug comes from a hidden CMS-bound div)
+  document.querySelectorAll('.facts li').forEach(function(li){
+    var lab = li.firstElementChild;
+    if(!lab || lab.textContent.trim() !== 'Handled by') return;
+    var val = lab.nextElementSibling, hold = val && val.nextElementSibling;
+    if(hold){ var slug = hold.textContent.trim(); hold.style.display='none';
+      if(val && slug && val.textContent.trim()){
+        var a = document.createElement('a'); a.href = '/attorneys/' + slug; a.className = 'alink';
+        while(val.firstChild) a.appendChild(val.firstChild); val.appendChild(a);
+      } }
+  });
+
   // results: multi-select filters, practice sub-filters, load more
   var grid = document.getElementById('rgrid');
   if (grid){

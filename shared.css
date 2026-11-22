@@ -961,3 +961,7 @@ a{text-underline-offset:3px}
 .btn-line.w-button:hover{background-color:var(--ink);color:var(--cream)}
 .btn-dark.w-button{background-color:var(--dark);color:var(--cream)}
 .btn-dark.w-button:hover{background-color:var(--gold);color:var(--white)}
+/* "Handled by" attorney link in result facts; sits above the whole-card link overlay */
+.facts li>div+div{display:none}
+.facts .alink{position:relative;z-index:3;color:inherit;text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px;text-decoration-thickness:1px}
+.facts .alink:hover{color:var(--gold)}
